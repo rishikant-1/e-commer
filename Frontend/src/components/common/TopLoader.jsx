@@ -3,9 +3,9 @@ import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 nprogress.configure({
-  showSpinner: false,   // Bottom spinner hatane ke liye
-  trickleSpeed: 100,    // Progress bar speed (default 200ms)
-  speed: 100            // Animation speed (default 400ms)
+  showSpinner: false, 
+  trickleSpeed: 200,    
+  speed: 100            
 });
 
 function TopLoader({isLoading}) {

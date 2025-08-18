@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+
 export default defineConfig({
   plugins: [
     react(),
@@ -10,7 +10,16 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/api/user': 'http://localhost:5000'
-    }
-  }
-})
+      '/api/user': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/api/seller': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+});

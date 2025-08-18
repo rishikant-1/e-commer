@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
-export const productSchema = new Schema({
+const productSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -12,8 +12,7 @@ export const productSchema = new Schema({
     maxlength: 1500
   },
   category: {
-    type: Schema.Types.ObjectId,
-    ref: 'Category',
+    type: String,
     required: true
   },
   price: {
@@ -26,7 +25,22 @@ export const productSchema = new Schema({
       default: 0 
     }
   },
-  images: [String],
+  brand: String,
+  model: String,
+  sellerId: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  },
+  images: [
+    {
+      url: String,
+      public_id: String
+    }
+  ],
+  thumbnail: {
+    url: String,
+    public_id: String
+  },
   ratings: {
     average: { 
       type: Number, 
@@ -42,3 +56,6 @@ export const productSchema = new Schema({
 }, {
   timestamps: true
 });
+
+
+export const Product = mongoose.model("Product", productSchema)

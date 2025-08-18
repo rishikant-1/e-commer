@@ -31,6 +31,9 @@ const userSchema = new Schema({
     enum: ['customer', 'admin', 'seller'],
     default: 'customer'
   },
+  refreshToken: {
+    type: String
+  },
   address: [
     {
       street: { type: String, trim: true },
@@ -68,19 +71,19 @@ userSchema.methods.generateAccessToken = function(){
       email: this.email,
       name: this.fullname.firstname
     },
-    process.env.ACCESS_TOKEN_SECRATE,
+    process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+      expiresIn: process.env.ACESS_TOKEN_EXPIRY
     }
   )
 }
 
-userSchema.generateRefreshToken = function(){
+userSchema.methods.generateRefreshToken = function(){
   return jwt.sign(
     {
       _id: this._id
     },
-    process.env.REFRESH_TOKEN_SECRATE,
+    process.env.REFRESH_TOKEN_SECRET,
     {
       expiresIn: process.env.REFRESH_TOKEN_EXPIRY
     }

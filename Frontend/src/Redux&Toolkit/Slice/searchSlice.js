@@ -1,39 +1,54 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import axios from 'axios'
+
+export const fetchAllProduct = createAsyncThunk('product/fetchAllProduct', async(_, {rejectWithValue}) => 
+{
+  try {
+    const res = await axios.post('/api/seller/get-all-product', {}, {withCredentials: true})  
+    return res?.data?.data
+  } catch (error) {
+    return rejectWithValue(error?.response?.data || error.message)
+  }
+})
+
 
 const initialState = {
-  input: '',
-  products: [
-    {
-      title: "s"
-    },
-    {
-      title: "d"
-    },
-    {
-      title: "t"
-    },
-    {
-      title: "h"
-    },
-  ]
+  products: [],
+  shortedProducts: [],
+  status: 'idle'
 }
 
 const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    getAllProduct: (state, actiion) => {
-
+    getAllProduct: (state) => {
+      state.shortedProducts = [...state.products];
     },
     filterProductByInputSearch: (state, action) => {
-      state.products = state.products.filter(d => d.title.toLowerCase()
+      state.shortedProducts = state.products?.filter(d => d?.title?.toLowerCase()
       .includes(action.payload.toLowerCase()
       ))
-    },
+    },  
     filterProductByCategory: (state, action) => {}
+  },
+  extraReducers: (builder) => {
+    builder
+    .addCase(fetchAllProduct.pending, (state, action) => {
+      state.status = 'loading'
+    })
+    .addCase(fetchAllProduct.fulfilled, (state, action) => {
+      state.status = 'success'
+      state.products = action.payload || []
+      state.shortedProducts = [...state?.products]
+    })
+    .addCase(fetchAllProduct.rejected, (state, action) => {
+      state.status = 'failed'
+      state.products = []
+    })
   }
 })
 
 
 export default productSlice.reducer
-export const {} = productSlice.actions
+export const {getAllProduct, filterProductByCategory, filterProductByInputSearch} = productSlice.actions

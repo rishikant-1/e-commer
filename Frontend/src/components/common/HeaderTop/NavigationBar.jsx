@@ -73,7 +73,7 @@ function NavigationBar() {
             )}
           </li>
         ))}
-        <ul className='flex items-center space-x-1 lg:invisible absolute left-15 bottom-10 h-24 w-6xl'>
+        <ul className='flex items-center space-x-1 lg:invisible absolute left-15 bottom-10 h-24 max-w-6xl'>
           <li className='h-7 w-7 flex items-center justify-center hover:bg-[#ff8f9c] bg-gray-100 rounded-full transition duration-300'>
             <Link to="#"><FaFacebookF /></Link>
           </li>

@@ -1,7 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import router from './routes/user.routes.js'
+import userRouter from './routes/user.routes.js'
+import productRouter from './routes/product.routes.js'
 
 const app = express()
 app.use(cors(
@@ -15,16 +16,18 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static("public"))
 app.use(express.json({limit: '16kb'}))
 
-app.use("/api/user", router)
+app.use("/api/user", userRouter)
+app.use('/api/seller', productRouter)
 
 app.use((err, req, res, next) => {
   const statusCode = typeof err.statusCode === 'number' ? err.statusCode : 500;
-
+  
   res.status(statusCode).json({
     success: false,
-    message: err.message || 'Something went wrong',
+    message: err.message || err || 'Something went wrong',
     errors: err.errors || [],
-    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
   });
 });
+
+
 export default app
