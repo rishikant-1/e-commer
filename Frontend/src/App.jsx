@@ -24,6 +24,8 @@ import { fetchUser } from './Redux&Toolkit/Slice/authSlice'
 import NotFoundPage from './components/NotFoundPages/NotFoundPage'
 import UnauthorizedPage from './components/NotFoundPages/UnauthorizedPage'
 import ProfilePage from './components/common/Profile/ProfilePage'
+import CheckOutPage from './pages/checkOut/CheckOutPage'
+import My_oders from './pages/My_oders'
 
 function App() {
 
@@ -49,6 +51,8 @@ function App() {
           <Route path='profile' element={<ProtectedRoute children={<ProfilePage />} />} />
         </Route>
         <Route path='/cart' element={<Cart />} />
+        <Route path='/cart/check-out' element={<CheckOutPage />} />
+        <Route path='/my-oders' element={<My_oders />} />
         <Route path='/auth' element={<AuthLayout />}>
           <Route path='user-login' element={<Login />} />
           <Route path='user-register' element={<Register />} />

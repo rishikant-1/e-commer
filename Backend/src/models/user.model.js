@@ -16,6 +16,11 @@ const userSchema = new Schema({
       trim: true,
     }
   },
+  dob: String,
+  avatar: {
+    url: String,
+    public_id: String
+  },
   email: {
     type: String,
     required: true,

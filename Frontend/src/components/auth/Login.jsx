@@ -9,7 +9,7 @@ import { fetchUser } from '../../Redux&Toolkit/Slice/authSlice';
 function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const {status} = useSelector(state => state.auth)
+  const { status } = useSelector(state => state.auth)
   const {
     register,
     handleSubmit,
@@ -17,20 +17,26 @@ function Login() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const res = await axios.post('/api/user/login', {
-      email: data.email,
-      password: data.password,
-      role: data.option
-    },{withCredentials: true})
-    
-    if(res.status === 200){
-      dispatch(fetchUser())
-      toast.success("Logged in Success")
-      setTimeout(()=>{
-        navigate('/')
-      },1000)
-    }else{
-       toast.error("something went wrong")
+    try {
+      const res = await axios.post('/api/user/login', {
+        email: data.email,
+        password: data.password,
+        role: data.option
+      }, { withCredentials: true })
+
+      if (res.status === 200) {
+        dispatch(fetchUser())
+        toast.success("Logged in Success")
+        setTimeout(() => {
+          navigate('/')
+        }, 1000)
+      }
+    } catch (error) {
+      if (error.response.status === 401) {
+        toast.error("Unauthorized User")
+      } else {
+        toast.error("something went wrong")
+      }
     }
   };
 
@@ -77,7 +83,7 @@ function Login() {
         )}
       </div>
       {/* toaster container */}
-        <Toaster />
+      <Toaster />
       <div>
         <select name="option" {...register("option", { required: true })}>
           <option value="customer">Customer</option>
@@ -93,9 +99,9 @@ function Login() {
         className="rounded border h-8 w-fit"
       />
       <button
-        disabled={status==="loading"?true:false}
+        disabled={status === "loading" ? true : false}
         type="submit"
-        className={`w-full bg-red-300 cursor-pointer ${!(status==="loading")&&'hover:bg-red-400'} text-white font-semibold py-2 rounded-md transition-all duration-300`}
+        className={`w-full bg-red-300 cursor-pointer ${!(status === "loading") && 'hover:bg-red-400'} text-white font-semibold py-2 rounded-md transition-all duration-300`}
       >
         {status === 'loading' ? 'Loading...' : 'Login'}
       </button>

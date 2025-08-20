@@ -50,7 +50,7 @@ function Cart() {
       </div>
       <div className="bg-white p-6 rounded-lg w-full shadow-md h-fit order-1 lg:order-2">
         <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-        <div className="space-y-3 text-sm text-gray-700">
+        <div className="space-y-3 mb-5 text-sm text-gray-700">
           <div className="flex justify-between">
             <span>Subtotal</span>
             <span className="flex items-center">
@@ -81,12 +81,13 @@ function Cart() {
             </span>
           </div>
         </div>
-        <button
-          className="w-full mt-6 bg-[#ff7979] text-white py-2 px-4 rounded hover:bg-red-400 transition-all"
+        <Link
+          to={'check-out'}
+          className="w-full bg-[#ff7979] text-white py-2 px-4 rounded hover:bg-red-400 transition-all"
           onClick={() => { }}
         >
           Proceed to Checkout
-        </button>
+        </Link>
       </div>
     </div>
   );

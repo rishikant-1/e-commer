@@ -2,6 +2,7 @@ import { asyncHandler } from '../utils/asyncHandler.js'
 import ApiError from '../utils/apiError.js'
 import ApiResponse from '../utils/apiResponse.js'
 import { User } from '../models/user.model.js'
+import cloudinary from '../middleware/multer.middleware.js'
 
 
 const generateAccessAndRefreshToken = async (userId) => {
@@ -150,11 +151,85 @@ const myData = asyncHandler(async (req, res) => {
   )
 })
 
+const editProfile = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user) throw new ApiError(400, "unAuthorised user")
+
+  const {fullname, dob } = req.body;
+
+  const userData = {}
+  
+  if(req.file){
+    userData.avatar = {
+      url: req.file.path,
+      public_id: req.file?.filename
+    }
+  }
+  if(fullname.firstname || fullname.lastname){
+    userData.fullname = {
+      firstname: fullname.firstname,
+      lastname: fullname.lastname
+    }
+  }
+  if(dob){
+    userData.dob = dob
+  }
+  if(req.file){
+    if(user.avatar?.public_id){
+      await cloudinary.uploader.destroy(user.avatar?.public_id);
+    }
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    {$set: userData },
+    {new: true, validateBeforeSave: false}
+  ).select("-password -refreshToken")
+
+  if(!updatedUser){
+    throw new ApiError(400, "unAuthirised user")
+  }
+  
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(
+      200,
+      updatedUser,
+      'user updated successfully'
+    )
+  )
+})
+
+const updateAdress = asyncHandler(async (req, res) => {
+  const userId = req.user._id
+  const {} = req.body;
+  const address = {}
+
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {$set: address},
+    {new: true, validateBeforeSave: false}
+  ).select("-password -refreshToken")
+  if(!updatedUser){
+    throw new ApiError(400, 'user not updated')
+  }
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(
+      200, 
+      updatedUser,
+      'User upadated successfully'
+    )
+  )
+})
 
 
 export {
   register,
   login,
   logOut,
-  myData
+  myData,
+  editProfile,
+  updateAdress
 } 

@@ -47,25 +47,10 @@ function ProfileTab({ profileTab, setProfileTab }) {
 
       </div>
       <Toaster />
-      {/* Quick Stats */}
-      {
-        (status === 'success') && <div className="justify-around border-b border-gray-200 flex">
-          <div className="text-center">
-            <p className="text-xl font-bold">0</p>
-            <p className="text-sm text-gray-500">Orders</p>
-          </div>
-          <div className="text-center">
-            <p className="text-xl font-bold">0</p>
-            <p className="text-sm text-gray-500">Wishlist</p>
-          </div>
-          <div className="text-center">
-            <p className="text-xl font-bold">3</p>
-            <p className="text-sm text-gray-500">Cart</p>
-          </div>
-        </div>
-      }
       {/* Menu Options */}
       <div className="flex flex-col">
+        <Link to='/my-oders' onClick={() => setProfileTab(false)} className="px-4 py-2 text-left hover:bg-gray-100">Oders history
+        </Link>
         <Link to='/profile' onClick={() => setProfileTab(false)} className="px-4 py-2 text-left hover:bg-gray-100">My Account
         </Link>
         {

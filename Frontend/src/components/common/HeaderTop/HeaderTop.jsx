@@ -10,7 +10,7 @@ function HeaderTop() {
     <div className='w-full'>
       <TopNav />  
       <SearchNav />
-      {location.pathname !== '/products' || '/seller-page'  && <NavigationBar /> }
+      {location.pathname === '/products' ? "" :location.pathname === '/seller-page' ?'': <NavigationBar /> }
     </div>
   )
 }

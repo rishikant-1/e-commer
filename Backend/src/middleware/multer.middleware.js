@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary'
 import multer from 'multer'
-import {createCloudinaryStorage} from 'multer-storage-cloudinary'
+import { createCloudinaryStorage } from 'multer-storage-cloudinary'
 import ApiError from '../utils/apiError.js'
 import dotenv from "dotenv"
 
@@ -14,7 +14,7 @@ cloudinary.config({
 })
 
 
-export const storage = new createCloudinaryStorage({
+const storage = new createCloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
     const category = req.body.category || 'general'
@@ -28,23 +28,50 @@ export const storage = new createCloudinaryStorage({
   }
 })
 
+const profileStorage = new createCloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: 'E-commerce/ProfilePic',
+      resource_type: 'image',
+      public_id: Date.now() + "-" + file.originalname.split(".")[0],
+      allowed_formats: ["jpeg", "png", "jpg", "webp"],
+      transformation: [{ quality: "auto", fetch_format: "auto" }]
+    }
+  }
+})
 
+export const ProfilePic = multer({
+  storage: profileStorage,
+  limits: {
+    fileSize: 4 * 1024 * 1024
+  },
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new ApiError(400, 'Only image files are allowed', false))
+    }
+    cb(null, true)
+  }
+
+})
 export const upload = multer({
   storage,
   limits: {
-    fileSize: 2 * 1024 * 1024
+    fileSize: 3 * 1024 * 1024
   },
-  
   fileFilter: (req, file, cb) => {
     if (!file.mimetype.startsWith('image/')) {
-      return new ApiError(400, 'Only image files are allowed', false)
+      return cb(new ApiError(400, 'Only image files are allowed', false))
     }
-    
     cb(null, true)
   }
 })
 
+
+
 export const uploadImageFields = upload.fields([
-  {name:'images', maxCount: 4},
-  {name: 'thumbnail', maxCount: 1}
+  { name: 'images', maxCount: 4 },
+  { name: 'thumbnail', maxCount: 1 }
 ])
+
+export default cloudinary
