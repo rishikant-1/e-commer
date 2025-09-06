@@ -1,44 +1,72 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { LuIndianRupee } from "react-icons/lu";
-import jacket3 from '../assets/products/jacket-3.jpg';
-import Footer from "../components/common/Footer/Footer"
-import HeaderTop from "../components/common/HeaderTop/HeaderTop";
 import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { } from "../Redux&Toolkit/Slice/cartSlice";
+import axios from "axios";
 
 function Cart() {
-  const { items } = useSelector((state) => state.cart);
-
+  const dispatch = useDispatch();
+  const { items } = useSelector(state => state.cart)
+  
+  const addItemsToCart = async (itemId) => {
+      if (itemId) {
+        const res = await axios.post("/api/cart/add-cart-item", { itemId }, {
+          withCredentials: true,
+        });
+        console.log(res);
+      }
+      
+    }
+    const removeItemsToCart = async (itemId) => {
+      if (itemId) {
+        const res = await axios.post("/api/cart/remove-cart-item", { itemId }, {
+          withCredentials: true,
+        });
+        console.log(res);
+      }
+    }
+    const deleteItemsToCart = async (itemId) => {
+      if (itemId) {
+        const res = await axios.post("/api/cart/delete-cart-item", { itemId }, {
+          withCredentials: true,
+        });
+        console.log(res);
+      }
+    }
+    
   return (
     <div className="grid lg:grid-cols-[70%_1fr] grid-cols-1 gap-12 w-full mt-6 bg-gray-50 px-4 sm:10 md:18 lg:px-24 py-5 h-auto">
       <div className="shadow-md px-2 md:p-5 rounded-md order-2 lg:order-1">
         <h1 className="text-3xl pink py-2 font-sans">Shopping Cart</h1>
-        <p className="text-right border-b border-gray-400">Price</p>
-        <div className=" w-full flex pb-4 mt-10  md:pr-3" >
-          {items.map((item) => (
-            <div key={item._id} className=" flex w-full bg-white border-1 border-gray-200 rounded-md">
-              <img className="h-38 sm:h-40" src={jacket3} alt="image" />
+        <p className="text-right border-b border-gray-400">Products</p>
+        <div className="w-full flex flex-col pb-4 mt-10  md:pr-3" >
+          {items.items?.map((item) => (
+            <div key={item.itemId._id} className="flex w-full gap-1 bg-white border-1 border-gray-200 rounded-md">
+              <img className="max-w-38 p-2 rounded-xl" src={item.itemId.thumbnail?.url} alt="image" />
               <div className="w-full py-3">
                 <div className="flex-col justify-between items-start w-full">
-                  <p className="max-w-md text-[1.3rem] tracking-tight mdtext-[1.5rem] font-sans">{item.title}</p>
+                  <p className="max-w-md text-[1.3rem] tracking-tight mdtext-[1.5rem] font-sans">{item.itemId.title}</p>
                   <div className="flex items-center gap-2">
                     <span className="text-sm line-through text-gray-500">₹2,999</span>
-                    <span className="text-lg font-bold text-black">₹{item.price}</span>
+                    <span className="text-lg font-bold text-black">₹{item.itemId.price.basePrice}</span>
                     <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-md text-xs">-63%</span>
                   </div>
                   <p className="text-green-500 text-sm">In Stock</p>
-                  <p className="text-[#531414] rounded-md opacity-70 font-bold">{item.category}</p>
+                  <p className="text-[#531414] rounded-md opacity-70 font-bold">{item.itemId.category}</p>
                 </div>
                 <p className="opacity-70 tracking-tight text-nowrap">Eligible for FREE Shipping</p>
                 <div className="flex flex-col sm:flex-row sm:items-end gap-3">
-                  <div className="w-36 sm:w-30 absolute left-10 bottom-6 sm:static flex items-center justify-between mt-6 rounded-full px-5 cursor-pointer bg-white shadow">
-                    <p className="text-3xl font-bold">-</p>
+                  <div className="w-30 absolute left-10 -bottom-10 sm:static flex items-center justify-between mt-6 rounded-full px-5 cursor-pointer bg-white shadow">
+                    <p className="text-3xl font-bold" onClick={() => removeItemsToCart(item.itemId._id)}>-</p>
                     <p className="text-2xl font-semibold font-sans pb-1">{item.quantity}</p>
-                    <p className="text-2xl font-bold">+</p>
+                    <p className="text-2xl font-bold" onClick={() => addItemsToCart(item.itemId._id)}>+</p>
                   </div>
                   <div className="flex items-center gap-3 text-nowrap flex-wrap">
-                    <Link to='/delete' className="border-none pink text-[#2162a1] hover:underline text-sm">delete</Link>
+                    <button
+                      onClick={() => deleteItemsToCart(item.itemId._id)}
+                      className="border-none pink text-[#2162a1] hover:underline text-sm">delete</button>
                     <button className="border-none pink h-10 text-[#2162a1] hover:underline text-sm">Save for later</button>
                     <Link className="border-none pink text-[#2162a1] hover:underline text-sm">See more review</Link>
                   </div>

@@ -134,7 +134,7 @@ function Register() {
         type="submit"
         className="w-full bg-red-300 cursor-pointer hover:bg-red-400 text-white font-semibold py-2 rounded-md transition-all duration-300"
       >
-        Login
+        Register
       </button>
       <div className='flex items-center justify-center gap-3'>
         <p>Already Account</p>

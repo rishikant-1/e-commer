@@ -1,13 +1,27 @@
-import mongoose,{Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const cartSchema = new Schema({
-  itemsId: [
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
+  items: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'Product',
-      required: true
+      itemId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+        // required: true
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+        min: [1, 'Quantity must be at least 1']
+      },
     }
   ]
+}, {
+  timestamps: true
 })
 
 

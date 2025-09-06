@@ -18,6 +18,8 @@ function SearchNav() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const {items} = useSelector(state => state.cart)
+  
   const searchHandler = () => {
     if (inputref.current.value !== '') {
       dispatch(getAllProduct())
@@ -59,7 +61,7 @@ function SearchNav() {
         </div>
         <Link to='/cart' className='relative cursor-pointer'>
           <FaOpencart size={"30px"} />
-          <span className='absolute flex items-center justify-center -top-1 -right-1 bg-red-400 text-white rounded-full h-4 w-4 text-sm'>0</span>
+          <span className='absolute flex items-center justify-center -top-1 -right-1 bg-red-400 text-white rounded-full h-4 w-4 text-sm'>{items.data?.length}</span>
         </Link>
       </div>
 

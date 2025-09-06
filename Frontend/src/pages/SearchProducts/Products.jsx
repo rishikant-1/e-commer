@@ -4,6 +4,9 @@ import Category from './Category'
 import { Link } from 'react-router-dom'
 import { fetchAllProduct } from '../../Redux&Toolkit/Slice/searchSlice'
 import { useDispatch } from 'react-redux'
+import axios from 'axios'
+import toast, { Toaster } from 'react-hot-toast'
+
 
 function Products() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -14,17 +17,25 @@ function Products() {
 
   const dispatch = useDispatch()
   const { shortedProducts } = useSelector(state => state.product)
- 
+
+  const addCartItem = async (itemId) => {
+    const res = axios.post("/api/cart/add-cart-item", { itemId }, { withCredentials: true });
+    if(res===200){
+      toast.success("Item Added To Cart");
+    }else{
+      toast.error("Somthing wrong");
+    }
+  }
   useEffect(() => {
     dispatch(fetchAllProduct())
-  }, [])
-  
+  }, [dispatch])
+
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-[250px_1fr] gap-6 px-4 md:px-12 lg:px-24 py-8">
       <Category />
       <div className="w-full" >
         <h1 className='text-3xl pb-3'>Products</h1>
-       {fetchAllProduct && <p className='text-2xl text-center my-20 opacity-40 font-bold'>product not found</p>}
+        {shortedProducts.length === 0 && <p className='text-2xl text-center my-20 opacity-40 font-bold'>Currently Product not Available</p>}
         {shortedProducts.slice(firstIndex, lastInadex).map((item) => (
           <div key={item._id} className="h-fit flex w-full mb-3 gap-6 bg-white border-1 border-gray-200 rounded-md">
             <div className='h-40 sm:h-55 min-w-38 p-1 bg-cover'>
@@ -38,6 +49,7 @@ function Products() {
                   <span className="text-lg font-bold text-black">₹{item?.price?.basePrice}</span>
                   <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-md text-xs">-63%</span>
                 </div>
+                <Toaster />
                 <p className="text-green-500 text-sm">In Stock</p>
                 <p className="text-[#531414] rounded-md opacity-70 font-bold">{item?.category}</p>
               </div>
@@ -46,7 +58,9 @@ function Products() {
                 <button className="border-none pink h-8 text-[#2162a1] hover:underline text-sm">Save for later</button>
                 <Link className="border-none pink text-[#2162a1] hover:underline text-sm">See more review</Link>
               </div>
-              <button className="mt-3 bg-red-300 text-white py-1 px-3  rounded-lg hover:bg-red-400 transition">
+              <button
+                onClick={() => addCartItem(item._id)}
+                className="mt-3 bg-red-300 text-white py-1 px-3  rounded-md hover:bg-red-400 transition">
                 Add to Cart
               </button>
             </div>
@@ -54,9 +68,9 @@ function Products() {
         ))}
         <div className='flex items-center justify-end gap-2'>
           {
-           Array(Math.ceil(shortedProducts.length / dataPerPage)).fill("1").map((_, idx)=>{
-            return <p key={idx} onClick={()=>setCurrentPage(idx+1)} className='px-2 py-1 bg-gray-200 rounded-md cursor-pointer'>{idx+1}</p>
-           })
+            Array(Math.ceil(shortedProducts.length / dataPerPage)).fill("1").map((_, idx) => {
+              return <p key={idx} onClick={() => setCurrentPage(idx + 1)} className='px-2 py-1 bg-gray-200 rounded-md cursor-pointer'>{idx + 1}</p>
+            })
           }
         </div>
       </div>

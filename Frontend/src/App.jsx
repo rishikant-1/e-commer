@@ -26,20 +26,25 @@ import UnauthorizedPage from './components/NotFoundPages/UnauthorizedPage'
 import ProfilePage from './components/common/Profile/ProfilePage'
 import CheckOutPage from './pages/checkOut/CheckOutPage'
 import My_oders from './pages/My_oders'
+import { syncCartToDb } from './Redux&Toolkit/Slice/cartSlice'
+
 
 function App() {
-
-
+  const {status} = useSelector(state => state.auth);
+  
   const dispatch = useDispatch()
   const [popup, setPopup] = useState(false)
   useEffect(() => {
-    dispatch(fetchUser());
+    if(status !== "success"){
+      dispatch(fetchUser());
+    }
+    dispatch(syncCartToDb())
     const timer = setTimeout(() => {
       setPopup(true)
     }, 6000)
     return () => clearTimeout(timer)
   }, [dispatch])
-
+ 
   return (
     <BrowserRouter>
       <NewsletterModal state={{ setPopup, popup }} />
