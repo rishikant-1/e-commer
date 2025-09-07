@@ -27,24 +27,25 @@ import ProfilePage from './components/common/Profile/ProfilePage'
 import CheckOutPage from './pages/checkOut/CheckOutPage'
 import My_oders from './pages/My_oders'
 import { syncCartToDb } from './Redux&Toolkit/Slice/cartSlice'
+import ItemSummeryPage from './pages/SearchProducts/ItemSummeryPage'
 
 
 function App() {
-  const {status} = useSelector(state => state.auth);
-  
+  const { status } = useSelector(state => state.auth);
+
   const dispatch = useDispatch()
   const [popup, setPopup] = useState(false)
   useEffect(() => {
-    if(status !== "success"){
+    if (status !== "success") {
       dispatch(fetchUser());
+      dispatch(syncCartToDb());
     }
-    dispatch(syncCartToDb())
     const timer = setTimeout(() => {
       setPopup(true)
     }, 6000)
     return () => clearTimeout(timer)
   }, [dispatch])
- 
+
   return (
     <BrowserRouter>
       <NewsletterModal state={{ setPopup, popup }} />
@@ -53,12 +54,13 @@ function App() {
         <Route path="/" element={<HomeLayOut />}>
           <Route path='' element={<Home />} />
           <Route path='products' element={<Products />} />
+          <Route path='products/detail/:id' element={<ItemSummeryPage />} />
           <Route path='profile' element={<ProtectedRoute children={<ProfilePage />} />} />
         </Route>
         <Route path='/cart' element={<Cart />} />
         <Route path='/cart/check-out' element={<CheckOutPage />} />
         <Route path='/my-oders' element={<My_oders />} />
-        <Route path='/auth' element={<AuthLayout />}>
+        <Route path='/auth' element={status !== "success" ? <AuthLayout /> : <Home />}>
           <Route path='user-login' element={<Login />} />
           <Route path='user-register' element={<Register />} />
         </Route>

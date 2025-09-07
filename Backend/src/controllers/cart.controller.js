@@ -43,7 +43,7 @@ const removeCartItem = asyncHandler(async (req, res) => {
     if (existedItem && existedItem.quantity > 1) {
       existedItem.quantity--;
     } else {
-      cart.items.filter(i => i.itemId.toString() !== itemId)
+      cart.items = cart.items.filter(i => i.itemId.toString() !== itemId)
     }
 
   await cart.save();
@@ -62,7 +62,7 @@ const deleteCartItem = asyncHandler(async (req, res) => {
   let cart = await Cart.findOne({ userId });
 
 
-  cart.items.find(i => i.itemId.toString() !== itemId)
+  cart.items = cart.items.find(i => i.itemId.toString() !== itemId)
 
   await cart.save();
 

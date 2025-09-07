@@ -25,7 +25,7 @@ function Login() {
       }, { withCredentials: true })
 
       if (res.status === 200) {
-        dispatch(fetchUser())
+        dispatch(fetchUser());
         toast.success("Logged in Success")
         setTimeout(() => {
           navigate('/')

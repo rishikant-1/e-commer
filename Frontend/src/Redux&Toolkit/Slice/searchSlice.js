@@ -30,7 +30,9 @@ const productSlice = createSlice({
       .includes(action.payload.toLowerCase()
       ))
     },  
-    filterProductByCategory: (state, action) => {}
+    filterProductByCategory: (state, action) => { 
+      state.shortedProducts = state.products?.filter(d => d.category === action.payload)
+    }
   },
   extraReducers: (builder) => {
     builder

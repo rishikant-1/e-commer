@@ -6,6 +6,7 @@ import { fetchAllProduct } from '../../Redux&Toolkit/Slice/searchSlice'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
+import { syncCartToDb } from '../../Redux&Toolkit/Slice/cartSlice'
 
 
 function Products() {
@@ -19,8 +20,10 @@ function Products() {
   const { shortedProducts } = useSelector(state => state.product)
 
   const addCartItem = async (itemId) => {
-    const res = axios.post("/api/cart/add-cart-item", { itemId }, { withCredentials: true });
-    if(res===200){
+    const res =await axios.post("/api/cart/add-cart-item", { itemId }, { withCredentials: true });
+    
+    if(res.status===200){
+      dispatch(syncCartToDb());
       toast.success("Item Added To Cart");
     }else{
       toast.error("Somthing wrong");
@@ -38,9 +41,9 @@ function Products() {
         {shortedProducts.length === 0 && <p className='text-2xl text-center my-20 opacity-40 font-bold'>Currently Product not Available</p>}
         {shortedProducts.slice(firstIndex, lastInadex).map((item) => (
           <div key={item._id} className="h-fit flex w-full mb-3 gap-6 bg-white border-1 border-gray-200 rounded-md">
-            <div className='h-40 sm:h-55 min-w-38 p-1 bg-cover'>
-              <img className="h-full w-full rounded-md" src={item?.thumbnail?.url} alt="image" />
-            </div>
+            <Link to={`/products/detail/${item._id}`} className='h-40 sm:h-55 min-w-72  p-1 bg-cover'>
+              <img className="h-full w-full object-cover rounded-md" src={item?.thumbnail?.url} alt="image" />
+            </Link>
             <div className="w-full">
               <div className="flex-col justify-between items-start w-full">
                 <p className="max-w-md text-[1.3rem] tracking-tight md:text-[1.5rem] font-sans">{item?.title}</p>
@@ -60,7 +63,7 @@ function Products() {
               </div>
               <button
                 onClick={() => addCartItem(item._id)}
-                className="mt-3 bg-red-300 text-white py-1 px-3  rounded-md hover:bg-red-400 transition">
+                className="mt-3 bg-red-300 text-white py-1 px-3  rounded-sm hover:bg-red-400 transition">
                 Add to Cart
               </button>
             </div>

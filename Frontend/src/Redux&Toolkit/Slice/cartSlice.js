@@ -9,7 +9,7 @@ export const syncCartToDb = createAsyncThunk("cart/syncCartToDb",
         withCredentials: true,
       });
       if (res.status == 200) {
-        return res.data.data
+        return res.data.data;
       }
     } catch (error) {
       return rejectWithValue(error)

@@ -3,39 +3,64 @@ import { LuIndianRupee } from "react-icons/lu";
 import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { } from "../Redux&Toolkit/Slice/cartSlice";
+import { syncCartToDb } from "../Redux&Toolkit/Slice/cartSlice";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import { useState } from "react";
+import { priceFormate } from "../utils/priceHelper";
 
 function Cart() {
   const dispatch = useDispatch();
   const { items } = useSelector(state => state.cart)
-  
+  const [TotalPrice, setTotalPrice] = useState(0);
+  console.log(TotalPrice);
+  useEffect(()=>{
+    const currentPrice = 0;
+    const a =Array.from(items).map(item => item.itemId.price.basePrice);
+    console.log(a);
+  },[items])
   const addItemsToCart = async (itemId) => {
-      if (itemId) {
-        const res = await axios.post("/api/cart/add-cart-item", { itemId }, {
-          withCredentials: true,
-        });
-        console.log(res);
-      }
-      
-    }
-    const removeItemsToCart = async (itemId) => {
-      if (itemId) {
-        const res = await axios.post("/api/cart/remove-cart-item", { itemId }, {
-          withCredentials: true,
-        });
-        console.log(res);
+    if (itemId) {
+      const res = await axios.post("/api/cart/add-cart-item", { itemId }, {
+        withCredentials: true,
+      });
+      if (res.status === 200) {
+        dispatch(syncCartToDb());
+        toast.success("Quantity increased");
+      } else {
+        toast.error("Somthing wrong");
       }
     }
-    const deleteItemsToCart = async (itemId) => {
-      if (itemId) {
-        const res = await axios.post("/api/cart/delete-cart-item", { itemId }, {
-          withCredentials: true,
-        });
-        console.log(res);
+
+  }
+  const removeItemsToCart = async (itemId) => {
+    if (itemId) {
+      const res = await axios.post("/api/cart/remove-cart-item", { itemId }, {
+        withCredentials: true,
+      });
+      if (res.status === 200) {
+        dispatch(syncCartToDb());
+        toast.success("Quantity decreased");
+      } else {
+        toast.error("Somthing wrong");
       }
     }
-    
+  }
+  const deleteItemsToCart = async (itemId) => {
+    if (itemId) {
+      const res = await axios.post("/api/cart/delete-cart-item", { itemId }, {
+        withCredentials: true,
+      });
+      if (res.status === 200) {
+        dispatch(syncCartToDb());
+        toast.success("Item deleted To Cart");
+      } else {
+        toast.error("Somthing wrong");
+      }
+    }
+  }
+
+
   return (
     <div className="grid lg:grid-cols-[70%_1fr] grid-cols-1 gap-12 w-full mt-6 bg-gray-50 px-4 sm:10 md:18 lg:px-24 py-5 h-auto">
       <div className="shadow-md px-2 md:p-5 rounded-md order-2 lg:order-1">
@@ -44,7 +69,9 @@ function Cart() {
         <div className="w-full flex flex-col pb-4 mt-10  md:pr-3" >
           {items.items?.map((item) => (
             <div key={item.itemId._id} className="flex w-full gap-1 bg-white border-1 border-gray-200 rounded-md">
-              <img className="max-w-38 p-2 rounded-xl" src={item.itemId.thumbnail?.url} alt="image" />
+              <div className="w-60 flex p-2 rounded-md">
+                <img className="w-full rounded-md" src={item.itemId.thumbnail?.url} alt="image" />
+              </div>
               <div className="w-full py-3">
                 <div className="flex-col justify-between items-start w-full">
                   <p className="max-w-md text-[1.3rem] tracking-tight mdtext-[1.5rem] font-sans">{item.itemId.title}</p>
@@ -56,6 +83,7 @@ function Cart() {
                   <p className="text-green-500 text-sm">In Stock</p>
                   <p className="text-[#531414] rounded-md opacity-70 font-bold">{item.itemId.category}</p>
                 </div>
+                <Toaster />
                 <p className="opacity-70 tracking-tight text-nowrap">Eligible for FREE Shipping</p>
                 <div className="flex flex-col sm:flex-row sm:items-end gap-3">
                   <div className="w-30 absolute left-10 -bottom-10 sm:static flex items-center justify-between mt-6 rounded-full px-5 cursor-pointer bg-white shadow">
