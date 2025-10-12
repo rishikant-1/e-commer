@@ -29,7 +29,7 @@ function SearchNav() {
       dispatch(getAllProduct())
     }
   }
-
+ 
   return (
     <div className='flex sm:flex-row flex-col items-center justify-between py-5 px-24 border-t-1 border-gray-200 border-b-1'>
       <Link to='/'><img className='w-30' src={logo} alt="logo" /></Link>
@@ -61,7 +61,7 @@ function SearchNav() {
         </div>
         <Link to='/cart' className='relative cursor-pointer'>
           <FaOpencart size={"30px"} />
-          <span className='absolute flex items-center justify-center -top-1 -right-1 bg-red-400 text-white rounded-full h-4 w-4 text-xs'>{items.items?.length}</span>
+          {items.items?.length >0 && <span className='absolute flex items-center justify-center -top-1 -right-1 bg-red-400 text-white rounded-full h-4 w-4 text-xs'>{items.items?.length}</span>}
         </Link>
       </div>
     </div>

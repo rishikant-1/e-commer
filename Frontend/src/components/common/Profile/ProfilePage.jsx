@@ -1,31 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaUserCircle, FaEnvelope, FaPhone, FaMapMarkerAlt, FaEdit, FaBox, FaHeart, FaSignOutAlt } from "react-icons/fa";
+import {useSelector} from 'react-redux'
+import {Link, Outlet} from 'react-router-dom'
+import { useDispatch } from "react-redux";
+import { profilePopup } from "../../../Redux&Toolkit/Slice/menuSlice";
+
+
 
 function ProfilePage() {
+  const {user} = useSelector(state => state.auth);
+  const {profilepopup} = useSelector(state => state.menu)
+  const dispatch = useDispatch()
+  
   return (
     <div className="max-w-6xl mx-auto bg-white mt-5 overflow-hidden">
 
       <div className="flex flex-col md:flex-row items-center md:items-start p-8 gap-8">
         <div className="flex flex-col items-center">
-          <FaUserCircle className="text-gray-400 text-9xl" />
+          {
+            user.avatar ? <img className="h-30 w-30 rounded-full" src={user.avatar?.url} alt="avatar" /> : <FaUserCircle className="text-gray-400 text-9xl" />
+          }
         </div>
 
         {/* User Info */}
         <div className="flex-1 space-y-2">
-          <h2 className="text-2xl font-bold text-gray-800">Rishi Kant</h2>
+          <h2 className="text-2xl font-bold text-gray-800">{user.fullname.firstname} {user.fullname.lastname}</h2>
           <p className="flex items-center gap-2 text-gray-600">
-            <FaEnvelope className="text-blue-500" /> rishi@example.com
+            <FaEnvelope className="text-blue-500" /> {user.email}
           </p>
           <p className="flex items-center gap-2 text-gray-600">
-            <FaPhone className="text-green-500" /> +91 9876543210
+            <FaPhone className="text-green-500" /> {user?.mobile_number || '+91 9876543210'}
           </p>
           <p className="flex items-center gap-2 text-gray-600">
             <FaMapMarkerAlt className="text-red-500" /> Saharanpur, Uttar Pradesh, India
           </p>
         </div>
-        <button className="mt-3 px-4 py-2 bg-red-300 text-white rounded-md flex items-center gap-2 hover:bg-red-400">
+        <Link onClick={() => dispatch(profilePopup(true))} to='update-profile' className="mt-3 px-4 py-2 bg-red-300 text-white rounded-md flex items-center gap-2 hover:bg-red-400">
           <FaEdit /> Edit Profile
-        </button>
+        </Link>
       </div>
 
       <hr className='opacity-30' />
@@ -93,7 +105,9 @@ function ProfilePage() {
           </ul>
         </div>
       </div>
-
+      {profilepopup && <div className="fixed top-0 left-0 bg-[#0000005e] h-full w-full flex items-center justify-center">
+         <Outlet />
+      </div>}
       {/* Logout Section */}
       <div className="p-8  flex justify-end">
         <button className="px-5 py-2 bg-red-500 text-white rounded-md flex items-center gap-2 hover:bg-red-600">

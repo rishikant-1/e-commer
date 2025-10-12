@@ -26,20 +26,7 @@ const initialState = {
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {
-    addCartItem: (state, action) => {
-      const itemId = action.payload?._id
-      state.itemId.addItem.unshift(itemId)
-    },
-    removeCartItem: (state, action) => {
-      const itemId = action.payload._id
-      state.itemId.removeItem.unshift(itemId)
-    },
-    deleteCartItem: (state, action) => {
-      const itemId = action.payload._id
-      state.itemId.deleteItem.unshift(itemId)
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(syncCartToDb.pending, (state) => {
@@ -59,4 +46,3 @@ const cartSlice = createSlice({
 })
 
 export default cartSlice.reducer
-export const { addCartItem, deleteCartItem, removeCartItem } = cartSlice.actions

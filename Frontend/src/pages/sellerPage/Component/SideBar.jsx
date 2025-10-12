@@ -24,7 +24,7 @@ function SideBar() {
         </Link>
         <Link
           className='bg-red-100 rounded-md p-2 hover:bg-red-300 transition duration-300 flex gap-1'
-          to='products'>
+          to='my-products'>
           <RiAlignItemLeftLine size={"25px"} />
           Products
         </Link>

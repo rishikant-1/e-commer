@@ -41,7 +41,7 @@ const profileStorage = new createCloudinaryStorage({
   }
 })
 
-export const ProfilePic = multer({
+export const avatar = multer({
   storage: profileStorage,
   limits: {
     fileSize: 4 * 1024 * 1024
@@ -71,7 +71,7 @@ export const upload = multer({
 
 export const uploadImageFields = upload.fields([
   { name: 'images', maxCount: 4 },
-  { name: 'thumbnail', maxCount: 1 }
+  { name: 'thumbnail', maxCount: 1 },
 ])
 
 export default cloudinary

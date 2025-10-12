@@ -28,6 +28,8 @@ import CheckOutPage from './pages/checkOut/CheckOutPage'
 import My_oders from './pages/My_oders'
 import { syncCartToDb } from './Redux&Toolkit/Slice/cartSlice'
 import ItemSummeryPage from './pages/SearchProducts/ItemSummeryPage'
+import UpdateProfile from './components/common/Profile/UpdateProfile'
+import MyProducts from './pages/sellerPage/Pages/my_products/MyProducts'
 
 
 function App() {
@@ -55,7 +57,9 @@ function App() {
           <Route path='' element={<Home />} />
           <Route path='products' element={<Products />} />
           <Route path='products/detail/:id' element={<ItemSummeryPage />} />
-          <Route path='profile' element={<ProtectedRoute children={<ProfilePage />} />} />
+          <Route path='profile' element={<ProtectedRoute children={<ProfilePage />} />} >
+            <Route path='update-profile' element={<UpdateProfile />} />
+          </Route>
         </Route>
         <Route path='/cart' element={<Cart />} />
         <Route path='/cart/check-out' element={<CheckOutPage />} />
@@ -76,6 +80,7 @@ function App() {
             <Route path='images' element={<Images />} />
             <Route path='review-submit' element={<ReviewSubmit />} />
           </Route>
+          <Route path='my-products' element={<MyProducts />} />
         </Route>
         <Route path='/unauthorized-page' element={<UnauthorizedPage />} />
         <Route path='*' element={<NotFoundPage />} />

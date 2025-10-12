@@ -17,9 +17,13 @@ const userSchema = new Schema({
     }
   },
   dob: String,
+  mobile_number: Number,
   avatar: {
     url: String,
     public_id: String
+  },
+  address: {
+    type: String
   },
   email: {
     type: String,
@@ -39,7 +43,7 @@ const userSchema = new Schema({
   refreshToken: {
     type: String
   },
-  address: [
+  delevered_address: [
     {
       street: { type: String, trim: true },
       city: { type: String, trim: true },

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   FaStar, FaChevronDown, FaExchangeAlt, FaTruck,
@@ -7,7 +7,7 @@ import {
 import { LuIndianRupee } from 'react-icons/lu';
 import { useDispatch, useSelector } from 'react-redux';
 import { priceDiscount } from '../../utils/priceHelper';
-import { addCartItem } from '../../Redux&Toolkit/Slice/cartSlice';
+
 import { fetchAllProduct } from '../../Redux&Toolkit/Slice/searchSlice';
 
 
@@ -59,8 +59,8 @@ const ItemSummeryPage = () => {
       labelLines: ['Top Brand'],
     },
     {
-      icon: <FaAmazon className="text-blue-600 w-8 h-8 mb-2" />,
-      labelLines: ['Amazon', 'Delivered'],
+      icon: <FaAmazon className="text-rose-600 w-8 h-8 mb-2" />,
+      labelLines: ['Anon', 'Delivered'],
     },
   ];
 
@@ -227,7 +227,7 @@ const ItemSummeryPage = () => {
               </select>
               <button
                 className="py-2 px-5 text-white w-full bg-red-300 hover:bg-red-400 cursor-pointer rounded-full"
-                onClick={() => dispatch(addCartItem(product._id))}
+                // onClick={() => dispatch(addCartItem(product._id))}
               >
                 Add to Cart
               </button>

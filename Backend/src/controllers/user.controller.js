@@ -3,6 +3,7 @@ import ApiError from '../utils/apiError.js'
 import ApiResponse from '../utils/apiResponse.js'
 import { User } from '../models/user.model.js'
 import cloudinary from '../middleware/multer.middleware.js'
+import { json } from 'express'
 
 
 const generateAccessAndRefreshToken = async (userId) => {
@@ -152,11 +153,13 @@ const myData = asyncHandler(async (req, res) => {
 })
 
 const editProfile = asyncHandler(async (req, res) => {
+  
   const user = req.user;
+  
   if(!user) throw new ApiError(400, "unAuthorised user")
 
   const {fullname, dob } = req.body;
-
+  const fname = JSON.parse(fullname)
   const userData = {}
   
   if(req.file){
@@ -165,10 +168,11 @@ const editProfile = asyncHandler(async (req, res) => {
       public_id: req.file?.filename
     }
   }
-  if(fullname.firstname || fullname.lastname){
+  console.log(userData);
+  if(fname.firstname || fname.lastname){
     userData.fullname = {
-      firstname: fullname.firstname,
-      lastname: fullname.lastname
+      firstname: fname.firstname,
+      lastname: fname.lastname
     }
   }
   if(dob){
@@ -179,6 +183,7 @@ const editProfile = asyncHandler(async (req, res) => {
       await cloudinary.uploader.destroy(user.avatar?.public_id);
     }
   }
+  
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
     {$set: userData },

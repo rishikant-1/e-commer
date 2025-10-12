@@ -8,9 +8,9 @@ function HeaderTop() {
   const location = useLocation()
   return (
     <div className='w-full'>
-      <TopNav />  
+      <TopNav />
       <SearchNav />
-      {location.pathname === '/products' ? "" :location.pathname === '/seller-page' ?'': <NavigationBar /> }
+      {location.pathname === '/products' ? "" : location.pathname.startsWith('/seller-page') ? '' : <NavigationBar />}
     </div>
   )
 }
