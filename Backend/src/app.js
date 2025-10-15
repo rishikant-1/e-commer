@@ -6,12 +6,22 @@ import productRouter from './routes/product.routes.js'
 import { cartRout } from './routes/cart.routes.js'
 
 const app = express()
-app.use(cors(
-  {
-    origin: 'https://anon-commerse.vercel.app',
-    credentials: true
-  }
-))
+const allowedOrigins = [
+  'http://localhost:5173',           // for local dev
+  'https://anon-commerse.vercel.app' // for production
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
+
 app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static("public"))
