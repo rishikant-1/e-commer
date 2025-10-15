@@ -10,10 +10,9 @@ function SellerHome() {
   if (productpopup) {
     document.body.style.overflow = "hidden";
   } else {
-    document.body.style.overflow = "auto"; // reset scroll
+    document.body.style.overflow = "auto"; 
   }
 
-  // Optional cleanup if the component unmounts while popup is open
   return () => {
     document.body.style.overflow = "auto";
   };

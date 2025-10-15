@@ -5,9 +5,7 @@ import API from '../../utils/Api'
 export const fetchAllProduct = createAsyncThunk('product/fetchAllProduct', async(_, {rejectWithValue}) => 
 {
   try {
-    const res = await API.post(`${import.meta.env.VITE_BASE_URL}/api/seller/get-all-product`,{},
-      {withCredentials: true}
-    )  
+    const res = await API.post('/api/seller/get-all-product')  
     return res?.data?.data
   } catch (error) {
     return rejectWithValue(error?.response?.data || error.message)

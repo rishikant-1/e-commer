@@ -6,9 +6,7 @@ import API from '../../utils/Api';
 export const fetchUser = createAsyncThunk('/auth/fetchUser', 
   async (_, {rejectWithValue}) => {
   try {
-    const res = await API.post(`${import.meta.env.VITE_BASE_URL}/api/user/user-data`,{},
-      {withCredentials: true}
-    )
+    const res = await API.post('/api/user/user-data')
     return res.data.data
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message)
