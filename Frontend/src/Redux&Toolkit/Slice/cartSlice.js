@@ -5,9 +5,7 @@ import axios from 'axios';
 export const syncCartToDb = createAsyncThunk("cart/syncCartToDb",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.post("/api/cart/fetch-cart-items",{}, {
-        withCredentials: true,
-      });
+      const res = await axios.post(`${API}/api/cart/fetch-cart-items`);
       if (res.status == 200) {
         return res.data.data;
       }
