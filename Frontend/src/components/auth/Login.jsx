@@ -4,6 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchUser } from '../../Redux&Toolkit/Slice/authSlice';
+import API from '../../utils/Api';
 
 
 function Login() {
@@ -18,7 +19,7 @@ function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post('/api/user/login', {
+      const res = await API.post('/api/user/login', {
         email: data.email,
         password: data.password,
         role: data.option
