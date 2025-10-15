@@ -3,7 +3,7 @@ import ApiError from '../utils/apiError.js'
 import ApiResponse from '../utils/apiResponse.js'
 import { User } from '../models/user.model.js'
 import cloudinary from '../middleware/multer.middleware.js'
-import { json } from 'express'
+
 
 
 const generateAccessAndRefreshToken = async (userId) => {

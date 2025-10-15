@@ -88,4 +88,5 @@ const getCategory = asyncHandler(async(req, res) => {
       )
     );
 })
+
 export { createProduct, getAllProduct, getCategory };
