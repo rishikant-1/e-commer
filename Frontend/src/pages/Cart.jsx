@@ -7,18 +7,24 @@ import { syncCartToDb } from "../Redux&Toolkit/Slice/cartSlice";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
-import { priceFormate } from "../utils/priceHelper";
+import { taxPrice } from "../utils/priceHelper";
 
 function Cart() {
   const dispatch = useDispatch();
   const { items } = useSelector(state => state.cart)
   const [TotalPrice, setTotalPrice] = useState(0);
-  console.log(TotalPrice);
-  useEffect(()=>{
-    const currentPrice = 0;
-    const a =Array.from(items).map(item => item.itemId.price.basePrice);
-    console.log(a);
-  },[items])
+  const shiping = 49
+  useEffect(() => {
+    if (items?.items?.length) {
+      const total = items.items.reduce((acc, item) => {
+        const price = item.itemId?.price?.basePrice || 0;
+        return acc + price * item.quantity;
+      }, 0);
+      setTotalPrice(total);
+    } else {
+      setTotalPrice(0);
+    }
+  }, [items])
   const addItemsToCart = async (itemId) => {
     if (itemId) {
       const res = await axios.post("/api/cart/add-cart-item", { itemId }, {
@@ -69,8 +75,8 @@ function Cart() {
         <div className="w-full flex flex-col pb-4 mt-10  md:pr-3" >
           {items.items?.map((item) => (
             <div key={item.itemId._id} className="flex w-full gap-1 bg-white border-1 border-gray-200 rounded-md">
-              <div className="w-60 flex p-2 rounded-md">
-                <img className="w-full rounded-md" src={item.itemId.thumbnail?.url} alt="image" />
+              <div className="w-60 h-60 flex p-2 rounded-md">
+                <img className="w-full h-full object-cover rounded-md" src={item.itemId.thumbnail?.url} alt="image" />
               </div>
               <div className="w-full py-3">
                 <div className="flex-col justify-between items-start w-full">
@@ -111,21 +117,21 @@ function Cart() {
             <span>Subtotal</span>
             <span className="flex items-center">
               <LuIndianRupee className="mr-1 text-sm" />
-              2
+              {TotalPrice}
             </span>
           </div>
           <div className="flex justify-between">
             <span>Tax (18%)</span>
             <span className="flex items-center">
               <LuIndianRupee className="mr-1 text-sm" />
-              2
+              {taxPrice(TotalPrice, 18)}
             </span>
           </div>
           <div className="flex justify-between">
             <span>Shipping</span>
             <span className="flex items-center">
               <LuIndianRupee className="mr-1 text-sm" />
-              9
+              {shiping}
             </span>
           </div>
           <hr className="my-2" />
@@ -133,7 +139,7 @@ function Cart() {
             <span>Total</span>
             <span className="flex items-center text-green-600">
               <LuIndianRupee className="mr-1 text-sm" />
-              89
+              {TotalPrice + shiping}
             </span>
           </div>
         </div>

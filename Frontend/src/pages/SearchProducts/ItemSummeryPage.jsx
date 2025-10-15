@@ -97,8 +97,8 @@ const ItemSummeryPage = () => {
         <div className="w-full lg:w-[58%] flex flex-col lg:flex-row gap-6">
           {/* Product Info */}
           <div className="flex-1">
-            <h1 className="font-semibold text-2xl tracking-tight">{product.title}</h1>
-
+            {/* <h1 className="font-semibold text-2xl tracking-tight">{product.title}</h1> */}
+            <p className="text-xl font-sans tracking-tight">{product.description}</p>
             {/* Rating */}
             <div className="flex items-center gap-1 text-orange-400 mt-2">
               <span className="text-gray-500 text-sm">{product.rating}</span>
@@ -116,7 +116,7 @@ const ItemSummeryPage = () => {
               <p className="text-red-500 text-xl md:text-2xl">-{product.price?.discount}%</p>
               <p className="text-black text-xl md:text-2xl font-semibold flex items-baseline">
                 <LuIndianRupee className="text-sm opacity-70" />
-                {product.price?.basePrice}
+                {Math.round(product.price?.discountedPrice)}
                 <sup className="opacity-70 text-sm">00</sup>
               </p>
             </div>

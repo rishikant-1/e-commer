@@ -20,7 +20,9 @@ function Products() {
   const { shortedProducts } = useSelector(state => state.product)
 
   const addCartItem = async (itemId) => {
-    const res =await axios.post("/api/cart/add-cart-item", { itemId }, { withCredentials: true });
+    const res =await axios.post("/api/cart/add-cart-item", 
+      { itemId }, 
+      { withCredentials: true });
     
     if(res.status===200){
       dispatch(syncCartToDb());
@@ -48,9 +50,11 @@ function Products() {
               <div className="flex-col justify-between items-start w-full">
                 <p className="max-w-md text-[1.3rem] tracking-tight md:text-[1.5rem] font-sans">{item?.title}</p>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm line-through text-gray-500">₹2,999</span>
-                  <span className="text-lg font-bold text-black">₹{item?.price?.basePrice}</span>
-                  <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-md text-xs">-63%</span>
+                  <span className="text-sm line-through text-gray-500">₹{item?.price?.basePrice}</span>
+                  <span className="text-lg font-bold text-black">
+                    ₹{Math.round(item?.price?.discountedPrice)}</span>
+                  <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-md text-xs">
+                    {item?.price?.discount}%</span>
                 </div>
                 <Toaster />
                 <p className="text-green-500 text-sm">In Stock</p>

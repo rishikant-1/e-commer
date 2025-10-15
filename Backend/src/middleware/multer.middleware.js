@@ -22,7 +22,7 @@ const storage = new createCloudinaryStorage({
       resource_type: "image",
       folder: `E-commerce/${category}`,
       public_id: Date.now() + "-" + file.originalname.split(".")[0],
-      allowed_formats: ["jpeg", "png", "webp", "jpg"],
+      allowed_formats: ["jpeg", "png", "webp", "jpg","avif"],
       transformation: [{ quality: "auto" }, { fetch_format: "auto" }]
     }
   }
@@ -35,7 +35,7 @@ const profileStorage = new createCloudinaryStorage({
       folder: 'E-commerce/ProfilePic',
       resource_type: 'image',
       public_id: Date.now() + "-" + file.originalname.split(".")[0],
-      allowed_formats: ["jpeg", "png", "jpg", "webp"],
+      allowed_formats: ["jpeg", "png", "jpg", "webp","avif"],
       transformation: [{ quality: "auto", fetch_format: "auto" }]
     }
   }

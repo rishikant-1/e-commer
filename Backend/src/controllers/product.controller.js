@@ -1,25 +1,14 @@
+import { CATEGORY_TAX } from "../constant/taxes.js";
 import { Product } from "../models/product.model.js";
 import ApiError from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const createProduct = asyncHandler(async (req, res) => {
-  const { title, description, category, price } = req.body;
+  const { title, description, category, price, discount } = req.body;
 
   if (!title?.trim() || !category?.trim()) {
     throw new ApiError(400, "Title and Category fields are required");
-  }
-
-  // Parse price object
-  let parsedPrice;
-  try {
-    parsedPrice = JSON.parse(price);
-  } catch (error) {
-    throw new ApiError(400, "Invalid price format");
-  }
-
-  if (!parsedPrice.basePrice) {
-    throw new ApiError(400, "Base price is required");
   }
 
   // File check
@@ -39,7 +28,10 @@ const createProduct = asyncHandler(async (req, res) => {
 
   const item = await Product.create({
     title,
-    price: parsedPrice,
+    price: {
+      basePrice: price,
+      discount
+    },
     category,
     description,
     images,
@@ -80,4 +72,20 @@ const getAllProduct = asyncHandler(async (req, res) => {
     );
 });
 
-export { createProduct, getAllProduct };
+const getProductParticularSeller = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  
+})
+
+const getCategory = asyncHandler(async(req, res) => {
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        {category: CATEGORY_TAX},
+        "Category successfully fetched"
+      )
+    );
+})
+export { createProduct, getAllProduct, getCategory };

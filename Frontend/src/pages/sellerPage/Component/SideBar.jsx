@@ -4,8 +4,11 @@ import { AiOutlineProduct, AiOutlineHome } from "react-icons/ai";
 import { IoArrowBack } from "react-icons/io5";
 import { Link } from 'react-router-dom'
 import { RiAlignItemLeftLine } from "react-icons/ri";
+import { productPopup } from '../../../Redux&Toolkit/Slice/menuSlice';
+import { useDispatch } from 'react-redux';
 
 function SideBar() {
+  const dispatch = useDispatch()
   return (
     <div className='ring-1 ring-gray-200 rounded-md p-2'>
       <h3 className='p-2 text-xl bg-red-300 rounded-md font-bold text-white mb-3'>Hello, Rishi</h3>
@@ -17,8 +20,10 @@ function SideBar() {
           Home
         </Link>
         <Link
+          to="add-product"
           className='bg-red-100 rounded-md p-2 hover:bg-red-300 transition duration-300 flex gap-1'
-          to='add-product'>
+          onClick={() => dispatch(productPopup(true))}
+          >
           <IoMdAdd size={"25px"} />
           Add Product
         </Link>

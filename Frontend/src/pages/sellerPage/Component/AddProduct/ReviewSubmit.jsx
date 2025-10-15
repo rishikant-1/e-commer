@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
-import {toast, Toaster} from 'react-hot-toast'
+import { toast, Toaster } from 'react-hot-toast'
 
 function ReviewSubmit() {
   const [loading, setLoading] = useState(false);
@@ -16,30 +16,13 @@ function ReviewSubmit() {
 
     const productData = new FormData();
 
-    productData.append('title', formData.title);
-    productData.append('description', formData.description);
-    productData.append('category', formData.category);
-    productData.append('price', JSON.stringify({ basePrice: formData.price }));
-    productData.append("thumbnail", formData?.thumbnail)
-    
+
 
     if (formData.images && formData.images.length > 0) {
       formData.images.forEach((img) => productData.append('images', img));
     }
+
     
-    try {
-      const res = await axios.post(
-        '/api/seller/add-new-product',
-        productData,
-        { withCredentials: true }
-      );
-      toast.success("Product Added Success")
-    } catch (error) {
-      toast.error("Something Wrong")
-      // console.error('Error:', error.response?.data || error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -51,7 +34,7 @@ function ReviewSubmit() {
         <b>Price: <span className="font-light">{formData.price}</span></b>
         <b>Description: <span className="font-light">{formData.description}</span></b>
         <b>Tax: <span className="font-light">{formData?.tax}</span></b>
-        <b>Description: <span className="font-light">{}</span></b>
+        <b>Description: <span className="font-light">{ }</span></b>
         <b>Thumbnail: <span className="font-light"></span></b>
         <img src={'.jpg'} alt="thumbnail" />
       </div>

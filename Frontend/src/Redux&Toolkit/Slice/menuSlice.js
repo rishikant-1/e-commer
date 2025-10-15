@@ -3,7 +3,8 @@ import {createSlice} from '@reduxjs/toolkit'
 const initialState = {
   popup: false,
   navigationPopup: false,
-  profilepopup: false
+  profilepopup: false,
+  productpopup: false
 }
 const popupSlice = createSlice({
   name: 'menu',
@@ -17,9 +18,16 @@ const popupSlice = createSlice({
     },
     profilePopup: (state, action) => {
       state.profilepopup = action.payload
+    },
+    productPopup: (state, action) => {
+      state.productpopup = action.payload
     }
   }
 })
 
 export default popupSlice.reducer
-export const { navigationMenu, categoryMenuPopup, profilePopup } = popupSlice.actions
+export const { 
+  navigationMenu, 
+  categoryMenuPopup, 
+  productPopup,
+  profilePopup } = popupSlice.actions

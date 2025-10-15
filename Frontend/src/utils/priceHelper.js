@@ -15,5 +15,5 @@ export const priceDiscount = (price, discount) => {
 
 //calculate tax
 export const taxPrice = (price, taxDiscount) => {
-  return price - (price * taxDiscount) /100;
+  return (price * taxDiscount) /100;
 }
