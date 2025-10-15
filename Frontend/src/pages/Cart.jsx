@@ -8,6 +8,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import { taxPrice } from "../utils/priceHelper";
+import API from "../utils/Api";
 
 function Cart() {
   const dispatch = useDispatch();

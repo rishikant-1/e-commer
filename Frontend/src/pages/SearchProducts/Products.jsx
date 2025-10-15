@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
 import { syncCartToDb } from '../../Redux&Toolkit/Slice/cartSlice'
+import API from '../../utils/Api'
 
 
 function Products() {

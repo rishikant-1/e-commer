@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
+import API from "../../../../utils/Api";
 
 function AddProductDetails() {
   const [categories, setCategories] = useState([]);
@@ -58,7 +59,7 @@ function AddProductDetails() {
         withCredentials: true,
       });
 
-      toast.success("✅ Product added successfully!");
+      toast.success(" Product added successfully!");
       reset(); // clear form after submit
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to add product");
