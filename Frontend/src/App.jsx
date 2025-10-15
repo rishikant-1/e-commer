@@ -17,7 +17,6 @@ import Main from './pages/sellerPage/Component/Main'
 import AddNewProduct from './pages/sellerPage/Pages/AddNewProduct'
 import SellerHome from './pages/sellerPage/Pages/SellerHome'
 import ProductDetails from './pages/sellerPage/Component/AddProduct/AddProductDetails'
-import ReviewSubmit from './pages/sellerPage/Component/AddProduct/ReviewSubmit'
 import { fetchUser } from './Redux&Toolkit/Slice/authSlice'
 import NotFoundPage from './components/NotFoundPages/NotFoundPage'
 import UnauthorizedPage from './components/NotFoundPages/UnauthorizedPage'
@@ -74,7 +73,6 @@ function App() {
           <Route path='' element={<Main />} />
           <Route path='add-product' element={<AddNewProduct />}>
             <Route path='' element={<ProductDetails />} />
-            <Route path='review-submit' element={<ReviewSubmit />} />
           </Route>
           <Route path='my-products' element={<MyProducts />} />
         </Route>
