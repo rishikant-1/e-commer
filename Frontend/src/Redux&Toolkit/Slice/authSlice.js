@@ -6,7 +6,7 @@ import API from '../../utils/Api';
 export const fetchUser = createAsyncThunk('/auth/fetchUser', 
   async (_, {rejectWithValue}) => {
   try {
-    const res = await axios.post(`${API}/api/user/user-data`)
+    const res = await API.post('/api/user/user-data')
     return res.data.data
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message)

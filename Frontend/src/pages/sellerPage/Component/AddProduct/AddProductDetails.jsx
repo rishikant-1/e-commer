@@ -25,7 +25,7 @@ function AddProductDetails() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.post(`${API}/api/seller/get-category`);
+        const res = await API.post('/api/seller/get-category');
         if (res.status === 200) setCategories(res.data.data);
       } catch (error) {
         toast.error("Failed to load categories");
@@ -55,7 +55,7 @@ function AddProductDetails() {
         formData.append("thumbnail", data.thumbnail[0]);
       }
 
-      await axios.post(`${API}/api/seller/add-new-product`, formData, {
+      await API.post('/api/seller/add-new-product', formData, {
         withCredentials: true,
       });
 

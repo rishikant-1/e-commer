@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { syncCartToDb } from "../Redux&Toolkit/Slice/cartSlice";
-import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import { taxPrice } from "../utils/priceHelper";
@@ -28,7 +27,7 @@ function Cart() {
   }, [items])
   const addItemsToCart = async (itemId) => {
     if (itemId) {
-      const res = await axios.post(`${API}/api/cart/add-cart-item`, { itemId });
+      const res = await API.post('/api/cart/add-cart-item', { itemId });
       if (res.status === 200) {
         dispatch(syncCartToDb());
         toast.success("Quantity increased");
@@ -40,7 +39,7 @@ function Cart() {
   }
   const removeItemsToCart = async (itemId) => {
     if (itemId) {
-      const res = await axios.post(`${API}/api/cart/remove-cart-item`, { itemId });
+      const res = await API.post('/api/cart/remove-cart-item', { itemId });
       if (res.status === 200) {
         dispatch(syncCartToDb());
         toast.success("Quantity decreased");
@@ -51,7 +50,7 @@ function Cart() {
   }
   const deleteItemsToCart = async (itemId) => {
     if (itemId) {
-      const res = await axios.post(`${API}/api/cart/delete-cart-item`, { itemId });
+      const res = await API.post('/api/cart/delete-cart-item', { itemId });
       if (res.status === 200) {
         dispatch(syncCartToDb());
         toast.success("Item deleted To Cart");

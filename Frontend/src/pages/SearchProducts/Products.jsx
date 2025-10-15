@@ -21,7 +21,7 @@ function Products() {
   const { shortedProducts } = useSelector(state => state.product)
 
   const addCartItem = async (itemId) => {
-    const res =await axios.post(`${API}/api/cart/add-cart-item`, 
+    const res =await API.post('/api/cart/add-cart-item', 
       { itemId });
     
     if(res.status===200){

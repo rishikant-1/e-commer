@@ -5,7 +5,7 @@ import API from '../../utils/Api'
 export const fetchAllProduct = createAsyncThunk('product/fetchAllProduct', async(_, {rejectWithValue}) => 
 {
   try {
-    const res = await axios.post(`${API}/api/seller/get-all-product`)  
+    const res = await API.post('/api/seller/get-all-product')  
     return res?.data?.data
   } catch (error) {
     return rejectWithValue(error?.response?.data || error.message)

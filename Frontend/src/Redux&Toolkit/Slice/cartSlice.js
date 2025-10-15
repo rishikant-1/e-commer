@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
 import API from '../../utils/Api';
 
 
 export const syncCartToDb = createAsyncThunk("cart/syncCartToDb",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.post(`${API}/api/cart/fetch-cart-items`);
+      const res = await API.post("/api/cart/fetch-cart-items");
       if (res.status == 200) {
         return res.data.data;
       }
