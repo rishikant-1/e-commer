@@ -73,7 +73,10 @@ const getAllProduct = asyncHandler(async (req, res) => {
 });
 
 const getProductParticularSeller = asyncHandler(async (req, res) => {
-  const userId = req.user._id;
+  const user = req.user;
+  if(user.roll === 'seller'){
+    Product.aggregate
+  }
   
 })
 
