@@ -11,8 +11,7 @@ app.use(cors(
     origin: [
     'http://localhost:8000',
     'http://localhost:5173',
-    'https://anon-commerse-rmpy6ls3u-rishi-kants-projects.vercel.app',
-    'https://anon-commerse-7bhy12aap-rishi-kants-projects.vercel.app'
+    'https://anon-commerse-git-main-rishi-kants-projects.vercel.app'
   ],
     credentials: true
   }
