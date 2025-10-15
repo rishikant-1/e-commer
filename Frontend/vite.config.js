@@ -11,17 +11,20 @@ export default defineConfig({
   server: {
     proxy: {
       '/api/user': {
-        target: 'http://localhost:5000',
+        // target: 'http://localhost:5000',
+        target: 'https://e-commer-zmu4.onrender.com',
         changeOrigin: true,
         secure: false,
       },
       '/api/seller': {
-        target: 'http://localhost:5000',
+        // target: 'http://localhost:5000',
+        target: 'https://e-commer-zmu4.onrender.com',
         changeOrigin: true,
         secure: false,
       },
       '/api/cart': {
-        target: 'http://localhost:5000',
+        // target: 'http://localhost:5000',
+        target: 'https://e-commer-zmu4.onrender.com',
         changeOrigin: true,
         secure: false,
       },
