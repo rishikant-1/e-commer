@@ -8,7 +8,10 @@ import { cartRout } from './routes/cart.routes.js'
 const app = express()
 app.use(cors(
   {
-    origin: 'https://anon-commerse.vercel.app',
+    origin: [
+      'https://anon-commerse.vercel.app',
+      'http://localhost:5173'
+    ],
     credentials: true,
   }
 ))

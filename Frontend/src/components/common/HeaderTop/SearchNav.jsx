@@ -22,7 +22,6 @@ function SearchNav() {
   
   const searchHandler = () => {
     if (inputref.current.value !== '') {
-      dispatch(getAllProduct())
       dispatch(filterProductByInputSearch(inputref.current.value))
       navigate('products')
     } else {

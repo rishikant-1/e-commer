@@ -19,3 +19,20 @@ const cart = [
     name: "full-shirt"
   }
 ]
+
+
+const debounce = (fnc, delay) => {
+  let timer;
+  return function(...args){
+    clearTimeout(timer)
+    timer = setTimeout(()=>{
+      // fnc(...args)
+    }, delay)
+  }
+}
+
+document.querySelector("input")
+.addEventListener("input", debounce(function(e){
+  console.log(e);
+  
+}, 1000))
