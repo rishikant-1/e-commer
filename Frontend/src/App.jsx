@@ -35,7 +35,7 @@ function App() {
   const dispatch = useDispatch()
   const [popup, setPopup] = useState(false)
   useEffect(() => {
-    if (status !== "success") {
+    if (status === "success") {
       dispatch(fetchUser());
       dispatch(syncCartToDb());
     }
@@ -44,7 +44,7 @@ function App() {
       setPopup(true)
     }, 6000)
     return () => clearTimeout(timer)
-  }, [dispatch, status])
+  }, [dispatch])
 
   return (
     <BrowserRouter>
