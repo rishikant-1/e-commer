@@ -3,6 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { clearUser } from '../../../Redux&Toolkit/Slice/authSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
+import API from '../../../utils/Api';
 
 function ProfileTab({ profileTab, setProfileTab }) {
   const { user, status } = useSelector(state => state.auth);
@@ -10,7 +11,7 @@ function ProfileTab({ profileTab, setProfileTab }) {
   const navigate = useNavigate()
   const logOutHandler = async () => {
     try {
-      const res = await axios.post('/api/user/logout', {}, { withCredentials: true });
+      const res = await API.post('/api/user/logout');
 
       if (res.status === 200) {
         setProfileTab(false)

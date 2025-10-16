@@ -91,7 +91,7 @@ const login = asyncHandler(async (req, res) => {
   const option = {
     secure: true,
     httpOnly: true,
-    sameSite: "strict"
+    sameSite: "strict",
   }
   return res
     .cookie("accessToken", accessToken, option)
@@ -140,6 +140,9 @@ const logOut = asyncHandler(async (req, res) => {
 })
 
 const myData = asyncHandler(async (req, res) => {
+  if(!req.user){
+    throw new ApiError(401, "Please login your Account")
+  }
   return res
   .json(
     new ApiResponse(

@@ -9,7 +9,7 @@ const app = express()
 app.use(cors(
   {
     origin: 'https://anon-commerse.vercel.app',
-    credentials: true
+    credentials: true,
   }
 ))
 app.use(cookieParser())

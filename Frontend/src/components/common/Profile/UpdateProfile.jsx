@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { profilePopup } from '../../../Redux&Toolkit/Slice/menuSlice';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
-import { Navigate } from 'react-router-dom';
 import { fetchUser } from '../../../Redux&Toolkit/Slice/authSlice';
 
 function UpdateProfile() {
@@ -25,7 +24,7 @@ function UpdateProfile() {
     formData.append("dob", dob)
     formData.append("avatar", avatar)
    
-    const response = await axios.put("/api/user/update-profile", formData, {
+    const response = await API.put("/api/user/update-profile", formData, {
       withCredentials: true,
       headers: { "Content-Type": "multipart/form-data" },
     })

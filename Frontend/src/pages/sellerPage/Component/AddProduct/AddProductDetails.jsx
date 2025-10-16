@@ -60,7 +60,7 @@ function AddProductDetails() {
       });
 
       toast.success(" Product added successfully!");
-      reset(); // clear form after submit
+      reset(); 
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to add product");
     } finally {
