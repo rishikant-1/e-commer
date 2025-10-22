@@ -7,7 +7,7 @@ import { FaLinkedinIn } from "react-icons/fa6";
 
 function TopNav() {
   return (
-    <div className='hidden md:flex justify-between items-center px-24 py-3'>
+    <div className='hidden sm:flex justify-between items-center px-24 py-3'>
       <ul className='flex items-center space-x-1'>
         <li className='h-7 w-7 flex items-center justify-center hover:bg-[#ff8f9c] bg-gray-100 rounded-full transition duration-300'>
           <Link to="#"><FaFacebookF /></Link>

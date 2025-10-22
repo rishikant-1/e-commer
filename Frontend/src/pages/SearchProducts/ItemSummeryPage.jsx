@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { priceDiscount } from '../../utils/priceHelper';
 
 import { fetchAllProduct } from '../../Redux&Toolkit/Slice/searchSlice';
+import toast, { Toaster } from 'react-hot-toast';
+import API from '../../utils/Api';
+import { syncCartToDb } from '../../Redux&Toolkit/Slice/cartSlice';
 
 
 const ItemSummeryPage = () => {
@@ -18,7 +21,19 @@ const ItemSummeryPage = () => {
   const [mainImage, setMainImage] = useState('');
   const dispatch = useDispatch();
 
+  const addCartItem = async (itemId) => {
+    try {
+      const res = await API.post('/api/cart/add-cart-item',
+        { itemId });
 
+      if (res.status === 200) {
+        dispatch(syncCartToDb());
+        toast.success("Item Added To Cart");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
 
   useEffect(() => {
     const foundProduct = products.find(d => d._id === id);
@@ -32,6 +47,8 @@ const ItemSummeryPage = () => {
   useEffect(() => {
     dispatch(fetchAllProduct());
   }, []);
+  console.log(product);
+  
 
   if (!product) {
     return <div className="text-center mt-10 text-red-500">Loading product summary...</div>;
@@ -227,11 +244,11 @@ const ItemSummeryPage = () => {
               </select>
               <button
                 className="py-2 px-5 text-white w-full bg-red-300 hover:bg-red-400 cursor-pointer rounded-full"
-                // onClick={() => dispatch(addCartItem(product._id))}
+                onClick={() => addCartItem(product._id)}
               >
                 Add to Cart
               </button>
-              <button className="py-2 px-5 text-white w-full bg-red-400 rounded-full">Buy Now</button>
+              <button className="py-2 px-5 text-white w-full bg-red-400 rounded-full cursor-pointer">Buy Now</button>
             </div>
           </div>
         </div>
@@ -252,6 +269,7 @@ const ItemSummeryPage = () => {
               <div>
                 <p className='font-medium'>{d.reviewerName}</p>
                 <p className='text-sm text-blue-500'>{d.reviewerEmail}</p>
+                <Toaster />
               </div>
             </div>
             <div className='ml-12 mt-2'>
@@ -262,7 +280,7 @@ const ItemSummeryPage = () => {
               </div>
               <p className='text-sm mt-1'>{d.comment}</p>
               <p className="text-xs text-gray-500">
-                {new Date(d.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+                {new Date(d.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}gyguguijtztdxcyvybinm;,';'
               </p>
             </div>
           </div>

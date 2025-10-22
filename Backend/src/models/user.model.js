@@ -41,7 +41,8 @@ const userSchema = new Schema({
     default: 'customer'
   },
   refreshToken: {
-    type: String
+    type: [String],
+    default: []
   },
   delevered_address: [
     {

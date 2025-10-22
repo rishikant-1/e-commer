@@ -3,6 +3,7 @@ import Sidebar from './Sidebar'
 import MinimalProducts from './MinimalProducts'
 import ProductMain from './ProductMain'
 import ProductFeature from './ProductFeature'
+import {Link} from 'react-router-dom'
 
 function ProductShowCase() {
   return (
@@ -12,6 +13,7 @@ function ProductShowCase() {
         <MinimalProducts />  
         <ProductFeature />  
         <ProductMain />  
+        <Link to='/products' className='float-right underline mr-8 hover:text-blue-500'>View all</Link>
       </div>
     </section>
   )

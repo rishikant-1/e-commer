@@ -27,6 +27,7 @@ import { syncCartToDb } from './Redux&Toolkit/Slice/cartSlice'
 import ItemSummeryPage from './pages/SearchProducts/ItemSummeryPage'
 import UpdateProfile from './components/common/Profile/UpdateProfile'
 import MyProducts from './pages/sellerPage/Pages/my_products/MyProducts'
+import ScrollStart from './utils/ScrollStart'
 
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
   const dispatch = useDispatch()
   const [popup, setPopup] = useState(false)
   useEffect(() => {
-    if (status === "success") {
+    if (status !== "success") {
       dispatch(fetchUser());
       dispatch(syncCartToDb());
     }
@@ -48,6 +49,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <ScrollStart />
       <NewsletterModal state={{ setPopup, popup }} />
       <HeaderTop />
       <Routes>

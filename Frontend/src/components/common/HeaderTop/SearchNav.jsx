@@ -18,8 +18,9 @@ function SearchNav() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const {items} = useSelector(state => state.cart)
-  
+  const { items } = useSelector(state => state.cart)
+  console.log(user);
+
   const searchHandler = () => {
     if (inputref.current.value !== '') {
       dispatch(filterProductByInputSearch(inputref.current.value))
@@ -28,10 +29,33 @@ function SearchNav() {
       dispatch(getAllProduct())
     }
   }
- 
+
   return (
-    <div className='flex sm:flex-row flex-col items-center justify-between py-5 px-24 border-t-1 border-gray-200 border-b-1'>
-      <Link to='/'><img className='w-30' src={logo} alt="logo" /></Link>
+    <div className='flex sm:flex-row flex-col items-center justify-between py-5 px-5 sm:px-10 md:px-24 border-t-1 border-gray-200 border-b-1'>
+      <div className='flex justify-between w-full sm:w-fit items-center py-2'>
+        <Link to='/'><img className='w-30' src={logo} alt="logo" /></Link>
+        <div className='flex sm:hidden  cursor-pointer opacity-100 relative'>
+          <div onClick={() => {
+            setProfileTab(!profileTab)
+            if (!user) dispatch(fetchUser())
+            setProfileTab(!profileTab)
+          }}>
+            {user?.avatar?.url ? (
+              <img
+                className="h-8 min-w-8 rounded-full object-cover border border-pink-300 shadow-sm"
+                src={user?.avatar?.url}
+                alt="Profile"
+              />
+            ) : (
+              <FaRegCircleUser size={"24px"} />
+            )}
+          </div>
+
+          <ProfileTab profileTab={profileTab} setProfileTab={setProfileTab} />
+
+        </div>
+      </div>
+
       <div className='flex items-center ring-1 max-w-4xl ring-gray-200 rounded-md pr-3 mx-3 w-full'>
         <input className='w-full md:block p-2 outline-0 '
           type="text"
@@ -44,13 +68,24 @@ function SearchNav() {
         <IoSearchSharp size={"25px"} onClick={searchHandler}
           className='cursor-pointer opacity-60 ' />
       </div>
-      <div className='hidden md:flex items-center gap-4'>
+      <div className='hidden sm:flex items-center gap-4'>
         <div className='cursor-pointer opacity-100 relative'>
-          <FaRegCircleUser size={"24px"} onClick={() => {
+          <div onClick={() => {
             setProfileTab(!profileTab)
             if (!user) dispatch(fetchUser())
             setProfileTab(!profileTab)
-          }} />
+          }}>
+            {user?.avatar?.url ? (
+              <img
+                className="h-8 min-w-8 rounded-full object-cover border border-pink-300 shadow-sm"
+                src={user?.avatar?.url}
+                alt="Profile"
+              />
+            ) : (
+              <FaRegCircleUser size={"24px"} />
+            )}
+          </div>
+
           <ProfileTab profileTab={profileTab} setProfileTab={setProfileTab} />
 
         </div>
@@ -60,7 +95,7 @@ function SearchNav() {
         </div>
         <Link to='/cart' className='relative cursor-pointer'>
           <FaOpencart size={"30px"} />
-          {items.items?.length >0 && <span className='absolute flex items-center justify-center -top-1 -right-1 bg-red-400 text-white rounded-full h-4 w-4 text-xs'>{items.items?.length}</span>}
+          {items.items?.length > 0 && <span className='absolute flex items-center justify-center -top-1 -right-1 bg-red-400 text-white rounded-full h-4 w-4 text-xs'>{items.items?.length}</span>}
         </Link>
       </div>
     </div>

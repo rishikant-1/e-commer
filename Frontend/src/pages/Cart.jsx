@@ -59,7 +59,8 @@ function Cart() {
       }
     }
   }
-
+  console.log(items);
+  
 
   return (
     <div className="grid lg:grid-cols-[70%_1fr] grid-cols-1 gap-12 w-full mt-6 bg-gray-50 px-4 sm:10 md:18 lg:px-24 py-5 h-auto">
@@ -76,9 +77,12 @@ function Cart() {
                 <div className="flex-col justify-between items-start w-full">
                   <p className="max-w-md text-[1.3rem] tracking-tight mdtext-[1.5rem] font-sans">{item.itemId.title}</p>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm line-through text-gray-500">₹2,999</span>
-                    <span className="text-lg font-bold text-black">₹{item.itemId.price.basePrice}</span>
-                    <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-md text-xs">-63%</span>
+                    <span className="text-sm line-through text-gray-500">₹{item.itemId.price.basePrice}</span>
+                    <span className="text-lg font-bold text-black">
+                      ₹{Math.round(item.itemId.price.discountedPrice)}
+                    </span>
+                    <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-md text-xs">
+                      -{item.itemId.price.discount}%</span>
                   </div>
                   <p className="text-green-500 text-sm">In Stock</p>
                   <p className="text-[#531414] rounded-md opacity-70 font-bold">{item.itemId.category}</p>
@@ -87,7 +91,8 @@ function Cart() {
                 <p className="opacity-70 tracking-tight text-nowrap">Eligible for FREE Shipping</p>
                 <div className="flex flex-col sm:flex-row sm:items-end gap-3">
                   <div className="w-30 absolute left-10 -bottom-10 sm:static flex items-center justify-between mt-6 rounded-full px-5 cursor-pointer bg-white shadow">
-                    <p className="text-3xl font-bold" onClick={() => removeItemsToCart(item.itemId._id)}>-</p>
+                    <p className="text-3xl font-bold" 
+                    onClick={() => removeItemsToCart(item.itemId._id)}>-</p>
                     <p className="text-2xl font-semibold font-sans pb-1">{item.quantity}</p>
                     <p className="text-2xl font-bold" onClick={() => addItemsToCart(item.itemId._id)}>+</p>
                   </div>

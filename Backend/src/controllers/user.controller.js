@@ -21,13 +21,16 @@ const generateAccessAndRefreshToken = async (userId) => {
 
     const accessToken = user.generateAccessToken()
     const refreshToken = user.generateRefreshToken()
+    
 
-
-    user.refreshToken = refreshToken
-    await user.save({ validateBeforeSave: false })
-    return { refreshToken, accessToken }
+    user.refreshToken = user.refreshToken || [];
+    user.refreshToken.push(refreshToken);
+    
+    await user.save({validateBeforeSave: false});
+    
+    return { accessToken, refreshToken };
   } catch (error) {
-    throw new ApiError(401, 'something went wrong while generating accessAndRefreshToken')
+    throw new ApiError(500, 'something went wrong while generating accessAndRefreshToken')
   }
 
 }
@@ -43,7 +46,7 @@ const register = asyncHandler(async (req, res) => {
 
 
   if (exisitedUser) {
-    throw new ApiError(401, 'User with this role already exists')
+    throw new ApiError(400, 'User with this role already exists')
   }
 
   const createdUser = await User.create({
@@ -94,15 +97,13 @@ const login = asyncHandler(async (req, res) => {
     sameSite: "none",
   }
   return res
-    .cookie("accessToken", accessToken, option)
-    .cookie("refreshToken", refreshToken, option)
+    .cookie("accessToken", accessToken, {...option, maxAge: 2 * 60 * 60 * 1000})
+    .cookie("refreshToken", refreshToken, {...option, maxAge: 7 * 24 * 60 * 60 * 1000})
     .json(
       new ApiResponse(
         200,
         {
           user: loggedInUser,
-          refreshToken,
-          accessToken,
         },
 
         "User LoggedIn SuccessFully"
@@ -111,7 +112,7 @@ const login = asyncHandler(async (req, res) => {
 })
 
 const logOut = asyncHandler(async (req, res) => {
-  
+
   await User.findByIdAndUpdate(
     req.user._id,
     {
@@ -140,96 +141,96 @@ const logOut = asyncHandler(async (req, res) => {
 })
 
 const myData = asyncHandler(async (req, res) => {
-  if(!req.user){
+  if (!req.user) {
     throw new ApiError(401, "Please login your Account")
   }
   return res
-  .json(
-    new ApiResponse(
-      200,
-      {
-        userData: req.user
-      },
-      "user data fetched"
+    .json(
+      new ApiResponse(
+        200,
+        {
+          userData: req.user
+        },
+        "user data fetched"
+      )
     )
-  )
 })
 
 const editProfile = asyncHandler(async (req, res) => {
-  
-  const user = req.user;
-  
-  if(!user) throw new ApiError(400, "unAuthorised user")
 
-  const {fullname, dob } = req.body;
+  const user = req.user;
+
+  if (!user) throw new ApiError(400, "unAuthorised user")
+
+  const { fullname, dob } = req.body;
   const fname = JSON.parse(fullname)
   const userData = {}
-  
-  if(req.file){
+
+  if (req.file) {
     userData.avatar = {
       url: req.file.path,
       public_id: req.file?.filename
     }
   }
   console.log(userData);
-  if(fname.firstname || fname.lastname){
+  if (fname.firstname || fname.lastname) {
     userData.fullname = {
       firstname: fname.firstname,
       lastname: fname.lastname
     }
   }
-  if(dob){
+  if (dob) {
     userData.dob = dob
   }
-  if(req.file){
-    if(user.avatar?.public_id){
+  if (req.file) {
+    if (user.avatar?.public_id) {
       await cloudinary.uploader.destroy(user.avatar?.public_id);
     }
   }
-  
+
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
-    {$set: userData },
-    {new: true, validateBeforeSave: false}
+    { $set: userData },
+    { new: true, validateBeforeSave: false }
   ).select("-password -refreshToken")
 
-  if(!updatedUser){
+  if (!updatedUser) {
     throw new ApiError(400, "unAuthirised user")
   }
-  
+
   return res
-  .status(200)
-  .json(
-    new ApiResponse(
-      200,
-      updatedUser,
-      'user updated successfully'
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        updatedUser,
+        'user updated successfully'
+      )
     )
-  )
 })
 
 const updateAdress = asyncHandler(async (req, res) => {
   const userId = req.user._id
-  const {} = req.body;
+  const { } = req.body;
   const address = {}
 
   const updatedUser = await User.findByIdAndUpdate(
     userId,
-    {$set: address},
-    {new: true, validateBeforeSave: false}
+    { $set: address },
+    { new: true, validateBeforeSave: false }
   ).select("-password -refreshToken")
-  if(!updatedUser){
+  if (!updatedUser) {
     throw new ApiError(400, 'user not updated')
   }
   return res
-  .status(200)
-  .json(
-    new ApiResponse(
-      200, 
-      updatedUser,
-      'User upadated successfully'
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        updatedUser,
+        'User upadated successfully'
+      )
     )
-  )
 })
 
 

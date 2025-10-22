@@ -6,18 +6,18 @@ import { useSelector } from 'react-redux';
 function ProtectedRoute({ children, allowedRole }) {
   const { user, status } = useSelector(state => state.auth);
 
-  // if (status === 'loading') {
-  //   return <TopLoader isLoading={true} />;
-  // }
-  // if(status === 'success' || status === 'rejected'){
-  //   return <TopLoader isLoading={false} />;
-  // }
+  const isLoading = status === 'loading' || status === 'idle';
 
-  if (!user || (allowedRole && user.role !== allowedRole)) {
-    return <Navigate to="/auth/user-login" replace />;
-  }
-
-  return children;
+  return (
+    <>
+      <TopLoader isLoading={isLoading} />
+      {isLoading ? null : !user || (allowedRole && user.role !== allowedRole) ? (
+        <Navigate to="/auth/user-login" replace />
+      ) : (
+        children
+      )}
+    </>
+  );
 }
 
 export default ProtectedRoute;

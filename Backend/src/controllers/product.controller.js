@@ -74,9 +74,29 @@ const getAllProduct = asyncHandler(async (req, res) => {
 
 const getProductParticularSeller = asyncHandler(async (req, res) => {
   const user = req.user;
-  if(user.roll === 'seller'){
-    Product.aggregate
+  if(!user.roll === 'seller'){
+    throw new ApiError(403, 'Access denied: Only sellers can access their products');
   }
+  
+  const product = await Product.aggregate([
+    {
+      $match: {sellerId: user._id},
+    }
+  ])
+
+  if(!product){
+    throw new ApiError(401, 'Unaouthorized request...');
+  }
+  
+  return res
+    .status(201)
+    .json(
+      new ApiResponse(
+        201,
+        product,
+        "Product created successfully"
+      )
+    );
   
 })
 
@@ -92,4 +112,4 @@ const getCategory = asyncHandler(async(req, res) => {
     );
 })
 
-export { createProduct, getAllProduct, getCategory };
+export { createProduct, getAllProduct, getCategory, getProductParticularSeller };

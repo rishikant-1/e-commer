@@ -1,22 +1,27 @@
-import { useEffect } from 'react'
-import nprogress from 'nprogress'
-import 'nprogress/nprogress.css'
+import { useEffect } from 'react';
+import nprogress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 nprogress.configure({
-  showSpinner: false, 
-  trickleSpeed: 200,    
-  speed: 100            
+  showSpinner: false,
+  trickleSpeed: 200,
+  speed: 400,
+  minimum: 0.15,
 });
 
-function TopLoader({isLoading}) {
+function TopLoader({ isLoading }) {
   useEffect(() => {
-    if(isLoading){
+    if (isLoading) {
       nprogress.start();
-    }else{
-      nprogress.done(true);
-      nprogress.remove();
+    } else {
+      // delay kar ke stop karo taaki animation smooth lage
+      const timer = setTimeout(() => {
+        nprogress.done();
+      }, 300);
+      return () => clearTimeout(timer);
     }
-  },[isLoading])
+  }, [isLoading]);
+
   return null;
 }
 

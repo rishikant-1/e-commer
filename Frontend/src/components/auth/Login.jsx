@@ -23,7 +23,7 @@ function Login() {
         email: data.email,
         password: data.password,
         role: data.option
-      }, { withCredentials: true })
+      })
 
       if (res.status === 200) {
         dispatch(fetchUser());
@@ -36,7 +36,7 @@ function Login() {
       if (error.response.status === 401) {
         toast.error("Unauthorized User")
       } else {
-        toast.error("something went wrong")
+        toast.error(error.message)
       }
     }
   };

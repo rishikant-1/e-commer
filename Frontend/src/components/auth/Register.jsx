@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom';
+import API from '../../utils/Api';
 
 function Register() {
   const navigate = useNavigate()
@@ -13,7 +14,7 @@ function Register() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const res = await axios.post('/api/user/register', {
+    const res = await API.post('/api/user/register', {
       fullname: {
         firstname: data.firstname,
         lastname: data.lastname
@@ -21,13 +22,10 @@ function Register() {
       email: data.email,
       password: data.password,
       role: data.role
-    },
-      {
-        withCredentials: true
-      })
+    })
 
     if (res.data.statusCode === 201) {
-      toast.success("user created succes")
+      toast.success("user registered succes")
       setTimeout(()=>{
         navigate('/auth/user-login')
       },1000)
