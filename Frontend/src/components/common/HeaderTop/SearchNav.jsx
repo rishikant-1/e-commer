@@ -19,7 +19,6 @@ function SearchNav() {
   const dispatch = useDispatch()
 
   const { items } = useSelector(state => state.cart)
-  console.log(user);
 
   const searchHandler = () => {
     if (inputref.current.value !== '') {

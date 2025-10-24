@@ -10,7 +10,7 @@ export const syncCartToDb = createAsyncThunk("cart/syncCartToDb",
         return res.data.data;
       }
     } catch (error) {
-      return rejectWithValue(error)
+      return rejectWithValue(error.response?.data?.message || error.message)
     }
   }
 )

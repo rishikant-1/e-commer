@@ -4,7 +4,6 @@ import ApiError from "../utils/apiError.js";
 
 const addCartItem = asyncHandler(async (req, res) => {
   const { itemId } = req.body;
-  console.log(itemId);
   const userId = req.user._id;
   let cart = await Cart.findOne({ userId });
   
@@ -15,7 +14,6 @@ const addCartItem = asyncHandler(async (req, res) => {
     });
   }
   const existedItem = cart.items.find(i => i.itemId.toString() === itemId)
-  console.log(existedItem);
   
   if (existedItem) {
     existedItem.quantity++;

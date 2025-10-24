@@ -47,7 +47,6 @@ const ItemSummeryPage = () => {
   useEffect(() => {
     dispatch(fetchAllProduct());
   }, []);
-  console.log(product);
   
 
   if (!product) {
@@ -82,7 +81,7 @@ const ItemSummeryPage = () => {
   ];
 
   const discountedPrice = priceDiscount(product.price?.basePrice, product.discount)
-  console.log(discountedPrice);
+ 
 
   return (
     <div className="w-full min-h-screen px-4 md:px-24 py-2 flex flex-col gap-8 bg-white">

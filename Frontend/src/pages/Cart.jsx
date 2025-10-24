@@ -14,6 +14,8 @@ function Cart() {
   const { items } = useSelector(state => state.cart)
   const [TotalPrice, setTotalPrice] = useState(0);
   const shiping = 49
+  
+  
   useEffect(() => {
     if (items?.items?.length) {
       const total = items.items.reduce((acc, item) => {
@@ -59,8 +61,6 @@ function Cart() {
       }
     }
   }
-  console.log(items);
-  
 
   return (
     <div className="grid lg:grid-cols-[70%_1fr] grid-cols-1 gap-12 w-full mt-6 bg-gray-50 px-4 sm:10 md:18 lg:px-24 py-5 h-auto">
@@ -70,8 +70,8 @@ function Cart() {
         <div className="w-full flex flex-col pb-4 mt-10  md:pr-3" >
           {items.items?.map((item) => (
             <div key={item.itemId._id} className="flex w-full gap-1 bg-white border-1 border-gray-200 rounded-md">
-              <div className="w-60 h-60 flex p-2 rounded-md">
-                <img className="w-full h-full object-cover rounded-md" src={item.itemId.thumbnail?.url} alt="image" />
+              <div className="w-60 h-60 flex rounded-md">
+                <img className="w-full h-full object-contain rounded-md" src={item.itemId.thumbnail?.url} alt="image" />
               </div>
               <div className="w-full py-3">
                 <div className="flex-col justify-between items-start w-full">
@@ -91,8 +91,8 @@ function Cart() {
                 <p className="opacity-70 tracking-tight text-nowrap">Eligible for FREE Shipping</p>
                 <div className="flex flex-col sm:flex-row sm:items-end gap-3">
                   <div className="w-30 absolute left-10 -bottom-10 sm:static flex items-center justify-between mt-6 rounded-full px-5 cursor-pointer bg-white shadow">
-                    <p className="text-3xl font-bold" 
-                    onClick={() => removeItemsToCart(item.itemId._id)}>-</p>
+                    <p className="text-3xl font-bold"
+                      onClick={() => removeItemsToCart(item.itemId._id)}>-</p>
                     <p className="text-2xl font-semibold font-sans pb-1">{item.quantity}</p>
                     <p className="text-2xl font-bold" onClick={() => addItemsToCart(item.itemId._id)}>+</p>
                   </div>
@@ -109,7 +109,7 @@ function Cart() {
           ))}
         </div>
       </div>
-      <div className="bg-white p-6 rounded-lg w-full shadow-md h-fit order-1 lg:order-2">
+      {items?.items.length > 0 && <div className="bg-white p-6 rounded-lg w-full shadow-md h-fit order-1 lg:order-2">
         <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
         <div className="space-y-3 mb-5 text-sm text-gray-700">
           <div className="flex justify-between">
@@ -149,7 +149,7 @@ function Cart() {
         >
           Proceed to Checkout
         </Link>
-      </div>
+      </div>}
     </div>
   );
 }
